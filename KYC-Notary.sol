@@ -35,7 +35,8 @@ interface KYC_Interface{
     function check4Token() external view returns(bool);
 }
 contract KYC is KYC_Interface,ERC1155{
-    uint256 public constant Key = 0;
+    uint256 private constant Key = 0;
+    address public KYC_NotaryAddress;
 
     string private legal_Name;
     string private permanentAddress;
@@ -43,7 +44,8 @@ contract KYC is KYC_Interface,ERC1155{
     string private SSN; 
     string private driversLicenceNumber; 
     //sets Notary address and ammount of keys
-    constructor(address KYC_NotaryAddress, uint keyAmmount) ERC1155("KYC Contract Token Notary: {KYC_NotaryAddress}"){
+    constructor(address _KYC_NotaryAddress, uint keyAmmount) ERC1155("KYC contract"){
+        KYC_NotaryAddress =_KYC_NotaryAddress;
         _mint(msg.sender, Key,keyAmmount, "");
     }
     //checks to see if caller is holding token
@@ -51,5 +53,4 @@ contract KYC is KYC_Interface,ERC1155{
         require(balanceOf(msg.sender, Key) > 0,"you are not the holder of this KYC contract");
         return true;
     }
-
 }
