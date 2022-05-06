@@ -2,14 +2,14 @@ pragma solidity ^0.8.10;
 // SPDX-License-Identifier: MIT
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 interface Notary_interface{
-    function check4Contract(address _Contract) external view returns(bool);
+    function checkContractStatus(address _Contract) external view returns(bool);
     function NotorizeContract(address _KYC_Contract, bool _status) external view returns(bool,string memory);
 }
 contract Notary is Notary_interface,ERC1155{
     uint256 public constant NotorizorKey = 0;
-
-    mapping(address => NotaryLedger) ledger;
-    struct NotaryLedger{
+    //set mapping for contracts created & logged into KYCLedger
+    mapping(address => KYCLedger) ledger;
+    struct KYCLedger{
         bool status;
     }
     constructor(uint keyAmmount) ERC1155("Notorizer Token"){
@@ -21,7 +21,7 @@ contract Notary is Notary_interface,ERC1155{
         _;
     }
     //anyone can check the status of a KYC contract
-    function check4Contract(address _Contract) public view returns(bool){
+    function checkContractStatus(address _Contract) public view returns(bool){
         return ledger[_Contract].status;
     }
     // Owner can notorize contract
@@ -29,10 +29,11 @@ contract Notary is Notary_interface,ERC1155{
         _status = ledger[_KYC_Contract].status;  
         return (true,"status of {_KYC_Contract} changed to {_status}");     
     }
+    function Launch_KYC_Contract(string memory legal_Name,string memory permanentAddress,string memory passport,string memory SSN,string memory driversLicenceNumber) public returns(bool){}
 }
-
 interface KYC_Interface{
-    function check4Token() external view returns(bool);
+    function ConfirmHolder(address _checkUser)external view returns(bool);
+    function ViewData() external view returns(string memory ,string memory,string memory,string memory,string memory);
 }
 contract KYC is KYC_Interface,ERC1155{
     uint256 private constant Key = 0;
@@ -54,8 +55,8 @@ contract KYC is KYC_Interface,ERC1155{
         _mint(msg.sender, Key,keyAmmount, "");
     }
     //checks to see if caller is holding token
-    function check4Token() public view returns(bool){
-        require(balanceOf(msg.sender, Key) > 0,"you are not the holder of this KYC contract");
+    function ConfirmHolder(address _checkUser)public view returns(bool){
+        require(balanceOf(_checkUser, Key) > 0,"user does not hold proper crededentials");
         return true;
     }
     //check data contents
