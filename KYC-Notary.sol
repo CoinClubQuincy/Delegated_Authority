@@ -12,7 +12,7 @@ contract Notary is Notary_interface,ERC1155{
     struct KYCLedger{
         bool status;
     }
-    event PrintKYCAddress(address _KYC);
+    KYC public kyc;
     constructor(uint keyAmmount) ERC1155("Notorizer Token"){
         _mint(msg.sender, NotorizorKey,keyAmmount, "");
     }
@@ -30,10 +30,10 @@ contract Notary is Notary_interface,ERC1155{
         _status = ledger[_KYC_Contract].status;  
         return (true,"status of {_KYC_Contract} changed to {_status}");     
     }
-    function Launch_KYC_Contract(string memory legal_Name,string memory permanentAddress,string memory passport,string memory SSN,string memory driversLicenceNumber) public returns(bool){
-
-        //emit PrintKYCAddress();
-        return true;
+    function Launch_KYC_Contract(uint _keyAmomunt,string memory _legal_Name,string memory _permanentAddress,string memory _passport,string memory _SSN,string memory _driversLicenceNumber) public returns(bool,address){
+        kyc = new KYC(address(this),_keyAmomunt,_legal_Name,_permanentAddress,_passport,_SSN,_driversLicenceNumber);
+        ledger[kyc] = KYCLedger(false);
+        return (true, );
     }
 }
 interface KYC_Interface{
