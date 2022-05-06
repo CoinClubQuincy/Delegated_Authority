@@ -32,8 +32,8 @@ contract Notary is Notary_interface,ERC1155{
     }
     function Launch_KYC_Contract(uint _keyAmomunt,string memory _legal_Name,string memory _permanentAddress,string memory _passport,string memory _SSN,string memory _driversLicenceNumber) public returns(bool,address){
         kyc = new KYC(address(this),_keyAmomunt,_legal_Name,_permanentAddress,_passport,_SSN,_driversLicenceNumber);
-        ledger[kyc] = KYCLedger(false);
-        return (true, );
+        ledger[address(kyc)] = KYCLedger(false);
+        return (true, address(kyc));
     }
 }
 interface KYC_Interface{
