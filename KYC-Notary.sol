@@ -12,6 +12,7 @@ contract Notary is Notary_interface,ERC1155{
     struct KYCLedger{
         bool status;
     }
+    //set KYC contract & launch constructor 
     KYC public kyc;
     constructor(uint keyAmmount) ERC1155("Notorizer Token"){
         _mint(msg.sender, NotorizorKey,keyAmmount, "");
