@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 interface Notary_interface{
     function checkContractStatus(address _Contract) external view returns(bool);
-    function NotorizeContract(address _KYC_Contract, bool _status) external view returns(bool,string memory);
+    function NotorizeContract(address _KYC_Contract, bool _status) external returns(bool,string memory);
 }
 contract Notary is Notary_interface,ERC1155{
     uint256 public constant NotorizorKey = 0;
@@ -27,11 +27,12 @@ contract Notary is Notary_interface,ERC1155{
         return ledger[_Contract].status;
     }
     // Owner can notorize contract
-    function NotorizeContract(address _KYC_Contract, bool _status) OnlyOwner public view returns(bool,string memory){
-        _status = ledger[_KYC_Contract].status;  
+    function NotorizeContract(address _KYC_Contract, bool _status) OnlyOwner public returns(bool,string memory){
+        ledger[_KYC_Contract].status =  _status;  
         return (true,"status of {_KYC_Contract} changed to {_status}");     
     }
     function Launch_KYC_Contract(address _initialcaller,uint _keyAmomunt,string memory _legal_Name,string memory _permanentAddress,string memory _passport,string memory _SSN,string memory _driversLicenceNumber) public returns(bool,address){
+        require(_initialcaller==msg.sender, "initialcaller must be msg.sender");
         kyc = new KYC(_initialcaller,address(this),_keyAmomunt,_legal_Name,_permanentAddress,_passport,_SSN,_driversLicenceNumber);
         ledger[address(kyc)] = KYCLedger(false);
         return (true, address(kyc));
