@@ -58,8 +58,14 @@ contract KYC is KYC_Interface,ERC1155{
         _;
     }
     //launches contracts and variables
-    constructor(address _user,address _KYC_NotaryAddress, uint keyAmmount, string memory legal_Name,string memory permanentAddress,string memory passport,string memory SSN,string memory driversLicenceNumber) ERC1155("KYC contract"){
+    constructor(address _user,address _KYC_NotaryAddress, uint keyAmmount, string memory _legal_Name,string memory _permanentAddress,string memory _passport,string memory _SSN,string memory _driversLicenceNumber) ERC1155("KYC contract"){
+        legal_Name = _legal_Name;
+        permanentAddress = _permanentAddress;
         KYC_NotaryAddress =_KYC_NotaryAddress;
+        passport = _passport;
+        SSN = _SSN;
+        driversLicenceNumber = _driversLicenceNumber;
+
         _mint(_user, Key,keyAmmount, "");
     }
     //checks to see if caller is holding token
