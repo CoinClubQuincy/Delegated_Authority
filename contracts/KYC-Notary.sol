@@ -31,7 +31,7 @@ contract Notary is Notary_interface,ERC1155{
         ledger[_KYC_Contract].status =  _status;  
         return (true,"status of {_KYC_Contract} changed to {_status}");     
     }
-    //Users can fill out KYCs fourms
+    //Users can fill out KYCs fourm 
     function Launch_KYC_Contract(address _initialcaller,uint _keyAmomunt,string memory _legal_Name,string memory _permanentAddress,string memory _passport,string memory _SSN,string memory _driversLicenceNumber) public returns(bool,address){
         require(_initialcaller==msg.sender, "initialcaller must be msg.sender");
         kyc = new KYC(_initialcaller,address(this),_keyAmomunt,_legal_Name,_permanentAddress,_passport,_SSN,_driversLicenceNumber);
