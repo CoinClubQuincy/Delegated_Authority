@@ -16,6 +16,7 @@ Third Party smart contracts and DApps can use the KYC user auth token as a form 
 
 Variables can be modified to hold any number of user PII Data 
 
+![Screen Shot 2022-05-26 at 3 10 18 PM](https://user-images.githubusercontent.com/16103963/170588148-a6ede28a-7dde-4053-867e-af4a3b767133.png)
 
 
 This contract is a proof of concept of how KYC notary contracts could work on the XDC network by having one contract produce a ledger of other contracts and  have the secondary contract hold the private information
